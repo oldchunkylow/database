@@ -18,6 +18,10 @@
   },
   "homepage": "https://github.com/oldchunkylow/database#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "init": "^0.1.2",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.7.9"
   }
 }
