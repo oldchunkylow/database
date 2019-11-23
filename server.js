@@ -6,6 +6,23 @@ const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const app = express();
 const db = mongoose.connection;
+require('dotenv').config()
+
+//___________________
+//Models
+//___________________
+const Question = require(`./models/question.js`);
+const Users = require(`./models/users.js`);
+const session = require('express-session');
+//___________________
+//Controllers
+//___________________
+const questionController = require(`./controllers/question.js`);
+const routeController = require(`./controllers/route.js`);
+const usersController = require(`./controllers/users.js`);
+const sessionsController = require('./controllers/sessions.js');
+const pushController = require('./controllers/push.js');
+
 //___________________
 //Port
 //___________________
@@ -16,7 +33,7 @@ const PORT = process.env.PORT || 3000;
 //Database
 //___________________
 // How to connect to the database either via heroku or locally
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/' + "database";
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/' + "quiz";
 
 // Connect to Mongo
 mongoose.connect(MONGODB_URI, {
@@ -47,13 +64,53 @@ app.use(express.json()); // returns middleware that only parses JSON - may or ma
 //use method override
 app.use(methodOverride('_method')); // allow POST, PUT and DELETE from a form
 
+/*Sessions*/
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false
+}))
+
+
+
+//___________________
+//Use Controllers
+//___________________
+app.use('/sessions', sessionsController);
+app.use(`/question`, questionController);
+app.use(`/push`, pushController);
+app.use(`/session`, routeController);
+app.use(`/users`, usersController);
 
 //___________________
 // Routes
 //___________________
 //localhost:3000 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    if (!req.session.currentUser) {
+        console.log("Not Logged In");
+        Question.find({}, (error, question) => {
+            res.render(`index.ejs`, {
+                question: question,
+                currentUser: req.session.currentUser
+            });
+        })
+    } else {
+        console.log("LOGINNN" + JSON.stringify(req.session.currentUser));
+        Question.find({
+            _id: {
+                $in: req.session.currentUser.activeSessions
+            }
+        }, (error, question) => {
+            /*
+                        console.log(question);*/
+            res.render(`index.ejs`, {
+                question: question,
+                currentUser: req.session.currentUser,
+            });
+        })
+    }
+
 });
 
 //___________________

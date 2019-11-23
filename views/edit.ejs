@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Test</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Latest compiled JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!--My JS-->
+    <script src="/scripts/index.js"></script>
+    <!--My CSS-->
+    <link rel="stylesheet" href="/css/fonts.css">
+    <link rel="stylesheet" href="/css/edit.css">
+</head>
+
+<body>
+    <div class="top-decoration">&nbsp;</div>
+    <main class="container">
+        <h1><%=question.sessionName%></h1>
+        <form action="/session/<%=question.id%>?_method=PUT" method="POST">
+            <input class="submitButton" type="submit" name="" value="Update Session"><br>
+            <label for="sessionName">Session Name: </label><input type="textarea" name="sessionName" value="<%=question.sessionName%>">
+            <div class="row">
+                <div class="submitButton add-question">Add Question</div>
+            </div>
+            <div class="question-section">
+                <% for (let i=0; i<question.questionSet.length; i++) {%>
+                <div class="question question-<%=i%>">
+                    <label for="question">Question: </label><input type="textarea" name="question-<%=i%>" value="<%=question.questionSet[i].question%>">
+
+                    <ul>
+                        <% for (let j =0; j <question.questionSet[i].answer.length;j++){%>
+                        <li>
+                            <label for="answer-<%=i%>">Answer <%=j+1%>: </label><input type="textarea" name="answer-<%=i%>" value="<%=question.questionSet[i].answer[j].answer%>"><input type="hidden" name="checked-<%=i%>" value="<%if(question.questionSet[i].answer[j].correct===true){%><%="true"%><%}%>"><input type="checkbox" name="tick" <%if(question.questionSet[i].answer[j].correct===true){%><%="checked"%><%}%>><a class="add-button">Add</a><a class="delete-button">Delete</a></li>
+        <%}%>
+        </ul>
+                                   <div class=" row"><a class=" submitButton delete-question-button">Delete Question</a>
+                </div>
+
+                <%}%>
+                 </div>
+            </div>
+        
+</form>
+    </main>
+    <script>
+        /*Check Stuff*/
+        $("input[type=checkbox]").each((i)=> {
+            $("input[type=checkbox]").eq(i).on("click",()=>{
+                if($("input[type=checkbox]").eq(i).prev().val()==="true"){
+                  $("input[type=checkbox]").eq(i).prev().val("false");  
+                    console.log($("input[type=checkbox]").eq(i).prev().val())
+                } else {
+ $("input[type=checkbox]").eq(i).prev().val("true");   console.log($("input[type=checkbox]").eq(i).prev().val())
+                }
+            })
+        })
+        /*Delete Button*/
+        $(".delete-button").on("click",(event)=>{
+deleteRow(event);
+                })
+        const deleteRow = (event) => {
+                       let $label= $(event.currentTarget).parent().nextAll().find("label");
+            if ($(event.currentTarget).closest("ul").find("li").length > 1) {
+                let $num = $(event.currentTarget).parent().nextAll().find("label");
+                $num.each((i) => {
+                    console.log($num.eq(i).text(`Answer ${$num.eq(i).text().match(/\d+/) -1}: `));
+                })
+                $(event.currentTarget).parent().remove();
+                console.log($num);
+            } else {
+                console.log("Only 1 item!")
+            }
+        }
+        /*Add Row*/
+        $(".add-button").on("click",(event)=>{addRow(event);})
+               const addRow = (event) => {
+let $newRow = $(event.currentTarget).parent().clone().appendTo($(event.currentTarget).parent().parent());
+                   $newRow.find("input[type=textarea]").val("");
+                    $newRow.find("input[type=hidden]").val("false");
+                     $newRow.find("input[type=checkbox]").prop('checked',false);
+                   $newRow.find("label").text(`Answer ${$newRow.index()+1}: `);
+                   $newRow.find(".add-button").on("click",(event)=>{
+                       addRow(event);
+                   })
+                          $newRow.find(".delete-button").on("click",(event)=>{
+                       deleteRow(event);
+                   })
+        }
+               $(".add-question").on("click",()=> {
+                   addQuestion();
+               });
+               /*Add Question*/
+                      const addQuestion = () => {
+            let $questionSection = $(".question-section");
+            let $num = $(`.question`).length;
+            let $container = $("<div>").addClass(`question question-${$num}`);
+            let $question = `<label for="question">Question: </label><input type="textarea" name="question-${$num}">`;
+            $container.append($question);
+            let $list = $("<ul>").appendTo($container);
+            let $labels = `<label for="answer-${$num}">Answer ${$(`input[name="answer-${$num}"]`).length +1}: </label><input type="textarea" name="answer-${$num}"><input type="hidden" name="checked-${$num}" value="false">`;
+            let $item = $("<li>").appendTo($list).html($labels);
+            let $checkBox = $("<input>").attr({
+                type: "checkbox",
+                name: "tick"
+            }).appendTo($item).on("click", () => {
+                if ($checkBox.prev().val() === "true") {
+                    $checkBox.prev().val("false");
+                } else {
+                    $checkBox.prev().val("true");
+                }
+                console.log($checkBox.prev().val());
+            });
+            let $addButton = $("<a>").text("Add").appendTo($item).on("click", (event) => {
+                addRow(event);
+            })
+            let $deleteButton = $("<a>").text("Delete").appendTo($item).on("click", (event) => {
+                deleteRow(event);
+            })
+            $questionSection.append($container);
+            let $deleteButtonQuestion = $("<a>").text("Delete Question").addClass("delete-question-button").appendTo($container).on("click", (event) => {
+                deleteQuestion(event);
+            });
+        }
+                      
+                      /*Delete Question*/
+$(".delete-question-button").on("click",(event)=>{deleteQuestion(event);})
+                              const deleteQuestion = (event) => {
+            let num = $(event.currentTarget).parent().index();
+            let next = $(event.currentTarget).parent().nextAll();
+            next.each((i) => {
+                let num = next.eq(i).index();
+                next.eq(i).find("label").attr("for", `answer-${num-1}`);
+                next.eq(i).find("input:eq(0)").attr("name", `answer-${num-1}`);
+                next.eq(i).find("input:eq(1)").attr("name", `checked-${num-1}`);
+                next.eq(i).find("question").attr("class", `question question-${num-1}`);
+                /*
+                                next.eq(i).find("input[type=`hidden`]").attr("name", `checked-${i}`);*/
+            })
+            $(event.currentTarget).parent().remove();
+        }
+                            
+    </script>
+</body>
+
+</html>

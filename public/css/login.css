@@ -1,0 +1,166 @@
+/*General*/
+
+body {
+    background: url("../images/bg-texture.png");
+    background-size: auto;
+    background-repeat: repeat;
+    color: white;
+    font-family: oracleSanRegular;
+    font-size: 1em;
+    /*  background: rgba(49, 45, 42);*/
+}
+
+h1,
+h2,
+h3 {
+    font-family: georgia;
+    color: white;
+    padding: 0;
+    margin: 0;
+}
+
+p {
+    color: white;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    text-decoration: none;
+    color: white;
+}
+
+a:visited {
+    text-decoration: none;
+    color: white;
+}
+
+a:link {
+    text-decoration: none;
+    color: white;
+}
+
+a:active {
+    text-decoration: none;
+    color: white;
+}
+
+.top-decoration {
+    height: 1rem;
+    width: 100%;
+    background: url("../images/topbar.png");
+    background-repeat: repeat-x;
+    background-size: contain;
+}
+
+main {
+    max-width: 1280px;
+    margin-top: 30px;
+}
+
+
+.divider-yellow {
+    width: 50px;
+    height: 5px;
+    background: rgba(250, 205, 98);
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+/*Buttons*/
+
+.action-button {
+    font-family: oracleSansBold;
+    background: rgba(43, 98, 66);
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: 0.5s;
+    color: white;
+    font-size: 2em;
+    margin: 0 10px;
+}
+
+.action-button:hover {
+    background: rgba(44, 89, 103);
+}
+
+/*Form Styling*/
+label {
+    font-family: oracleSansLight;
+    color: grey;
+    font-size: 1.5em;
+}
+
+.sign-in-box {
+    background: white;
+    border-radius: 5px;
+    width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.sign-in-box h2 {
+    color: black;
+    font-family: oracleSansBold;
+}
+
+.login input {
+    background: rgba(43, 98, 66);
+    border: none;
+    border-radius: 5px;
+    font-family: oracleSansBold;
+    padding: 18px 20px;
+    font-size: 2em;
+    width: 100%;
+    transition: 0.5s;
+}
+
+.login input:hover {
+    background: rgba(44, 89, 103);
+
+}
+
+.password input,
+.username input {
+    border: none;
+    background: none;
+    color: black;
+    font-family: oracleSansBold;
+    font-size: 2em;
+    border-bottom: solid 1px black;
+    width: 100%;
+
+}
+
+.sign-in-box form {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.sign-in-box .row {
+    padding: 20px 0;
+}
+
+.createUser {
+    background: rgba(43, 98, 66);
+    border-radius: 5px;
+    font-family: oracleSansBold;
+    transition: 0.5s;
+    font-size: 2em;
+    cursor: pointer;
+}
+
+.createUser:hover {
+    background: rgba(44, 89, 103);
+}
+
+.homepageText {
+    color: grey !important;
+    font-size: 1.5em;
+    font-family: oracleSansLight;
+    text-decoration: underline !important;
+}

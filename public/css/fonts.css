@@ -1,0 +1,61 @@
+@font-face {
+  font-family: oracleSansBold;
+  src: url("../fonts/OracleSans-Bold.woff");
+}
+
+@font-face {
+  font-family: oracleSansBoldItalic;
+  src: url("../fonts/OracleSans-BoldItalic.woff");
+}
+
+@font-face {
+  font-family: oracleSansExtraBoldItalic;
+  src: url("../fonts/OracleSans-ExtraBoldItalic.woff");
+}
+
+@font-face {
+  font-family: oracleSansExtraBold;
+  src: url("../fonts/OracleSans-ExtraBold.woff");
+}
+
+@font-face {
+  font-family: oracleSansItalic;
+  src: url("../fonts/OracleSans-Italic.woff");
+}
+
+@font-face {
+  font-family: oracleSansLight;
+  src: url("../fonts/OracleSans-Light.woff");
+}
+
+@font-face {
+  font-family: oracleSansLightItalic;
+  src: url("../fonts/OracleSans-LightItalic.woff");
+}
+
+@font-face {
+  font-family: oracleSansRegular;
+  src: url("../fonts/OracleSans-Regular.woff");
+}
+
+@font-face {
+  font-family: oracleSansSemiBold;
+  src: url("../fonts/OracleSans-SemiBold.woff");
+}
+
+@font-face {
+  font-family: oracleSansSemiBoldItalic;
+  src: url("../fonts/OracleSans-SemiBoldItalic.woff");
+}
+
+@font-face {
+  font-family: oracleSansUltraLight;
+  src: url("../fonts/OracleSans-UltraLight.woff");
+}
+
+@font-face {
+  font-family: oracleSansUltraLightItalic;
+  src: url(../fonts/OracleSans-UltraLightItalic.woff);
+}
+
+

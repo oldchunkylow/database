@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Latest compiled JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!--My JS-->
+    <script src="/scripts/index.js"></script>
+    <!--My CSS-->
+    <link rel="stylesheet" href="/css/fonts.css">
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+
+<body>
+    <div class="top-decoration">&nbsp;</div>
+    <main class="container">
+        <!--Sign In Header-->
+        <section class="text-center">
+            <% if(!currentUser){%>
+            <h1 class="login row">Please Sign In</h1>
+            <div class="login row">
+                <a href="/sessions/new" class="action-button fixed">Log In</a>
+                <a href="/users" class="action-button fixed">Sign Up</a>
+            </div>
+            <%}%>            
+        </section> 
+        <% if(currentUser) {%>
+            <div class="row">
+                <h1 class="col"><%=currentUser.username%>'s Dashboard</h1>
+                <form class="col text-right my-auto" action="/sessions?_method=DELETE" method="POST">
+                    <input type="submit" value="Logout" class="logout-button" />
+                </form>
+            </div>
+            <div class="divider-yellow">&nbsp;</div>
+            <section class="profile row">
+                <div class="image-container col-2">
+                    <img src="https://www.sltravelbelize.com/wp-content/uploads/2015/02/profile-placeholder.gif">
+                </div>
+                <div class="col">
+                    <h2><%=currentUser.username%></h2>
+                    <span class="userTypeButton"><%=currentUser.accountType.charAt(0).toUpperCase()+ currentUser.accountType.slice(1)%>
+                    </span>
+                </div>
+            </section>
+            <div class="divider-thin">&nbsp;</div>
+            <%}%>
+            <h1> <% if(currentUser) { %>
+            <div class="row">
+                <% for (let i =0; i <question.length; i++) {%>
+                <div class="col-3 sessionText">
+                    <a class="row sessionLabel" href="/session/<%=question[i].id%>"><%=question[i].sessionName%></a>
+                    <p class="row numberOfQuestions">No. of Questions: <%=question[i].questionSet.length%></p>
+                </div>
+                <%}%>
+                   </div>
+<div class="row">
+    <a class="button" href="/question/new">Create a Session</a>
+                    <% if(currentUser.accountType === "admin") { %>
+                <a class="button" href="/push">Assign Sessions to Users</a>
+                <%}%>
+    </div>
+    <% }%>
+
+    </main>
+</body>
+
+</html>

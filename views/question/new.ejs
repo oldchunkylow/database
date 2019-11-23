@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Test</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Latest compiled JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!--My JS-->
+    <script src="/scripts/index.js"></script>
+    <!--My CSS-->
+    <link rel="stylesheet" href="/css/fonts.css">
+    <link rel="stylesheet" href="/css/new.css">
+</head>
+
+<body>
+    <div class="top-decoration">&nbsp;</div>
+    <main class="container">
+
+        <div class="row">
+            <h1 class="col">Create Your Session</h1>
+            <form class="col text-right my-auto" action="/sessions?_method=DELETE" method="POST">
+                <input type="submit" value="Logout" class="logout-button" />
+            </form>
+        </div>
+        <div class="divider-yellow">&nbsp;</div>
+        <div class="row">
+            <span class="add-button button">Add Question</span>
+        </div>
+
+        <form action="/question" method="post">
+            <label for="sessionName">Session Name:</label><input type="text" name="sessionName">
+            <div class="question-section">
+            </div>
+            <div class="row">
+                <input type="submit" name="" class="submitButton" value="Create Session">
+            </div>
+        </form>
+    </main>
+    <script>
+        /*Get all Checkboxes*/
+        let checkboxes = document.querySelectorAll("input[type='checkbox']");
+        /*For each checkbox, add event listener*/
+
+        checkboxes.forEach((cb, i) => {
+            /*Set all checkboxes to match currently ticked, so refresh does not mess it up*/
+            cb.previousSibling.value = cb.checked;
+            /*When checked, make checkbox value = tick*/
+            cb.addEventListener("click", () => {
+                console.log(cb.checked);
+                cb.previousSibling.value = cb.checked;
+                console.log(cb.previousSibling);
+            });
+        });
+        /*Jquery*/
+        $(() => {
+            //Add new Question
+            $(".add-button").on("click", () => {
+                addQuestion();
+            })
+        })
+
+        const addQuestion = () => {
+            let $questionSection = $(".question-section");
+            let $num = $(`.question`).length;
+            let $container = $("<div>").addClass(`question question-${$num}`);
+            let $question = `<label for="question">Question: </label><input type="textarea" name="question-${$num}">`;
+            $container.append($question);
+            let $list = $("<ul>").appendTo($container);
+            let $labels = `<label class="my-auto col-1" for="answer-${$num}">Ans ${$(`input[name="answer-${$num}:"]`).length +1}</label><input class="col-6" type="textarea" name="answer-${$num}"><input type="hidden" name="checked-${$num}" value="false">`;
+            let $item = $("<li>").appendTo($list).html($labels).addClass("row");
+            let $checkBox = $("<input>").attr({
+                type: "checkbox",
+                name: "tick"
+            }).appendTo($item).addClass(" my-auto").on("click", () => {
+                if ($checkBox.prev().val() === "true") {
+                    $checkBox.prev().val("false");
+                } else {
+                    $checkBox.prev().val("true");
+                }
+                console.log($checkBox.prev().val());
+            });
+            let $addButton = $("<a>").text("Add Question").appendTo($item).addClass("miniButton").on("click", (event) => {
+                addRow(event);
+            })
+            let $deleteButton = $("<a>").text("Delete Answer").addClass("miniButton").appendTo($item).on("click", (event) => {
+                deleteRow(event);
+            })
+            $questionSection.append($container);
+            let $deleteButtonRow = $("<div>").addClass("row").appendTo($container);
+            let $deleteButtonQuestion = $("<a>").addClass("deleteQuestionButton row offset-10").text("Delete Question").appendTo($deleteButtonRow).on("click", (event) => {
+                deleteQuestion(event);
+            });
+        }
+
+        const deleteQuestion = (event) => {
+            let num = $(event.currentTarget).parent().index();
+            let next = $(event.currentTarget).parent().nextAll();
+            next.each((i) => {
+                let num = next.eq(i).index();
+                next.eq(i).find("label").attr("for", `answer-${num-1}`);
+                next.eq(i).find("input:eq(0)").attr("name", `answer-${num-1}`);
+                next.eq(i).find("input:eq(1)").attr("name", `checked-${num-1}`);
+                next.eq(i).find("question").attr("class", `question question-${num-1}`);
+                /*
+                                next.eq(i).find("input[type=`hidden`]").attr("name", `checked-${i}`);*/
+            })
+            $(event.currentTarget).parent().parent().remove();
+        }
+
+        const addRow = (event) => {
+            /*            let $name = $(event.currentTarget).siblings("input[type='textarea']").attr('name');*/
+            let $num = $(event.currentTarget).closest(".question").index(".question");
+            let $labels = `<label class="my-auto col-1" for="answer-${$num}">Ans ${$(`input[name="answer-${$num}"]`).length+1}</label><input class="col-6" type="textarea" name="answer-${$num}"><input type="hidden" name="checked-${$num}" value="false"><input class="my-auto" type="checkbox" name="tick">`;
+            let $item = $("<li>").appendTo($(event.currentTarget).closest("ul")).html($labels).addClass("row");
+            let $addButton = $("<a>").text("Add Question").addClass("miniButton my-auto").appendTo($item).on("click", (event) => {
+                addRow(event);
+            })
+            let $deleteButton = $("<a>").text("Delete Answer").addClass("miniButton my-auto").appendTo($item).on("click", (event) => {
+                deleteRow(event);
+            })
+        }
+
+        const deleteRow = (event) => {
+            if ($(event.currentTarget).closest("ul").find("li").length > 1) {
+                let $num = $(event.currentTarget).parent().nextAll().find("label");
+                $num.each((i) => {
+                    console.log($num.eq(i).text(`Answer ${$num.eq(i).text().match(/\d+/) -1}: `));
+                })
+                $(event.currentTarget).parent().remove();
+                console.log($num);
+            } else {
+                console.log("Only 1 item!")
+            }
+        }
+
+    </script>
+</body>
+
+</html>

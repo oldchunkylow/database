@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Test</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Latest compiled JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!--My JS-->
+    <script src="/scripts/index.js"></script>
+    <!--My CSS-->
+    <link rel="stylesheet" href="/css/fonts.css">
+    <link rel="stylesheet" href="/css/route.css">
+</head>
+
+<body>
+    <div class="top-decoration">&nbsp;</div>
+    <main class="container">
+
+        <h1><%=question.sessionName%></h1>
+        <div class="divider-yellow">&nbsp;</div>
+        <% for (let i=0; i<question.questionSet.length; i++) {%>
+        <section class="questionSection">
+            <p class="row"><span class="col-1">Q<%=i+1%>.</span> <%=question.questionSet[i].question%></p>
+            <ul>
+                <% for (let j =0; j <question.questionSet[i].answer.length;j++){%>
+                <li class="row">
+                    <span class=""><%=j+1%>. <%=question.questionSet[i].answer[j].answer%></span>
+                </li>
+
+                <%}%>
+            </ul>
+                </section>
+    <%}%>
+                <div class="row">
+                    <form action="/session/<%=question.id%>/edit"><input class="action-button" type="submit" value="Edit"></form>
+                    <form action="/session/<%=question.id%>?_method=DELETE" method="POST"><input class="action-button" type="submit" value="Delete"></form>
+                </div>
+    </main>
+</body>
+
+</html>
